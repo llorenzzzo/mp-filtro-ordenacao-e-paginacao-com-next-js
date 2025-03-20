@@ -6,13 +6,38 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination';
+} from "@/components/ui/pagination";
 
-export default function Pagination() {
+type PaginationProps = {
+  links: {
+    url: string;
+    label: string;
+    active: boolean;
+    id: number;
+  }[];
+};
+
+export default function Pagination({ links }: PaginationProps) {
   return (
     <PaginationComponent>
       <PaginationContent>
-        <PaginationItem>
+        {links.map((link) => {
+          if (
+            link.label.includes("Anterior") ||
+            link.label.includes("Próximo")
+          ) {
+            return null;
+          }
+          return (
+            <PaginationItem key={link.url}>
+              <PaginationLink
+                isActive={link.active}
+                dangerouslySetInnerHTML={{ __html: link.label }}
+              ></PaginationLink>
+            </PaginationItem>
+          );
+        })}
+        {/* <PaginationItem>
           <PaginationPrevious />
         </PaginationItem>
         <PaginationItem className="hidden md:inline-flex">
@@ -38,7 +63,7 @@ export default function Pagination() {
         </PaginationItem>
         <PaginationItem>
           <PaginationNext />
-        </PaginationItem>
+        </PaginationItem> */}
       </PaginationContent>
     </PaginationComponent>
   );
